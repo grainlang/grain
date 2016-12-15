@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"io/ioutil"
+	"os/exec"
 )
 
 func main() {
@@ -63,5 +64,9 @@ func main() {
 		llvm.RelocDefault,
 		llvm.CodeModelSmall)
 	buffer, err := machine.EmitToMemoryBuffer(mainModule, llvm.ObjectFile)
-	ioutil.WriteFile("hello.o", buffer.Bytes(), 0644)
+	objectFileName := "hello.o"
+	ioutil.WriteFile(objectFileName, buffer.Bytes(), 0644)
+	cmd := exec.Command("clang", objectFileName, "-o", "hello")
+	cmd.Run()
+	os.Remove(objectFileName)
 }
