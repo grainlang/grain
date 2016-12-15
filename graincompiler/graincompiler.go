@@ -16,6 +16,9 @@ func main() {
 	putsFuncType := llvm.FunctionType(llvm.Int32Type(), []llvm.Type{llvm.PointerType(llvm.Int8Type(), 0)}, false)
 	putsFunc := llvm.AddFunction(mainModule, "puts", putsFuncType)
 
+	printfFuncType := llvm.FunctionType(llvm.Int32Type(), []llvm.Type{llvm.PointerType(llvm.Int8Type(), 0)}, true)
+	printfFunc := llvm.AddFunction(mainModule, "printf", printfFuncType)
+
 	mainFuncType := llvm.FunctionType(llvm.VoidType(), []llvm.Type{}, false)
 	mainFunc := llvm.AddFunction(mainModule, "main", mainFuncType)
 
@@ -23,7 +26,9 @@ func main() {
 	builder.SetInsertPoint(body, mainFunc)
 
 	hello := builder.CreateGlobalStringPtr("Hello, Grainlang!", "hello")
+	format := builder.CreateGlobalStringPtr("[%s]", "format")
 	builder.SetInsertPoint(body, body.FirstInstruction())
+	builder.CreateCall(printfFunc, []llvm.Value{format, hello}, "printf2")
 	builder.CreateCall(putsFunc, []llvm.Value{hello}, "puts2")
 	builder.CreateRetVoid()
 
