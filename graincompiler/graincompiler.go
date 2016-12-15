@@ -21,15 +21,13 @@ func main() {
 
 	mainFuncType := llvm.FunctionType(llvm.VoidType(), []llvm.Type{}, false)
 	mainFunc := llvm.AddFunction(mainModule, "main", mainFuncType)
-
 	body := llvm.AddBasicBlock(mainFunc, "entry")
-	builder.SetInsertPoint(body, mainFunc)
+	builder.SetInsertPoint(body, body.FirstInstruction())
 
 	hello := builder.CreateGlobalStringPtr("Hello, Grainlang!", "hello")
 	format := builder.CreateGlobalStringPtr("[%s]", "format")
-	builder.SetInsertPoint(body, body.FirstInstruction())
-	builder.CreateCall(printfFunc, []llvm.Value{format, hello}, "printf2")
-	builder.CreateCall(putsFunc, []llvm.Value{hello}, "puts2")
+	builder.CreateCall(putsFunc, []llvm.Value{hello}, "res")
+	builder.CreateCall(printfFunc, []llvm.Value{format, hello}, "res")
 	builder.CreateRetVoid()
 
 	mainModule.Dump()
@@ -71,7 +69,7 @@ func main() {
 	buffer, err := machine.EmitToMemoryBuffer(mainModule, llvm.ObjectFile)
 	objectFileName := "hello.o"
 	ioutil.WriteFile(objectFileName, buffer.Bytes(), 0644)
-	cmd := exec.Command("clang", objectFileName, "-o", "hello")
+	cmd := exec.Command("clang", objectFileName, "-o", "hello_program")
 	cmd.Run()
 	os.Remove(objectFileName)
 }
