@@ -24,10 +24,21 @@ func main() {
 	body := llvm.AddBasicBlock(mainFunc, "entry")
 	builder.SetInsertPoint(body, body.FirstInstruction())
 
+	getcharFuncType := llvm.FunctionType(llvm.Int32Type(), []llvm.Type{}, false)
+	getcharFunc := llvm.AddFunction(mainModule, "getchar", getcharFuncType)
+	putcharFuncType := llvm.FunctionType(llvm.VoidType(), []llvm.Type{llvm.Int32Type()}, false)
+	putcharFunc := llvm.AddFunction(mainModule, "putchar", putcharFuncType)
+
 	hello := builder.CreateGlobalStringPtr("Hello, Grainlang!", "hello")
 	format := builder.CreateGlobalStringPtr("[%s]", "format")
 	builder.CreateCall(putsFunc, []llvm.Value{hello}, "res")
 	builder.CreateCall(printfFunc, []llvm.Value{format, hello}, "res")
+	char := builder.CreateCall(getcharFunc, []llvm.Value{}, "char")
+	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
+	char = builder.CreateCall(getcharFunc, []llvm.Value{}, "char")
+	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
+	char = builder.CreateCall(getcharFunc, []llvm.Value{}, "char")
+	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
 	builder.CreateRetVoid()
 
 	mainModule.Dump()
