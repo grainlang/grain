@@ -33,12 +33,14 @@ func main() {
 	format := builder.CreateGlobalStringPtr("[%s]", "format")
 	builder.CreateCall(putsFunc, []llvm.Value{hello}, "res")
 	builder.CreateCall(printfFunc, []llvm.Value{format, hello}, "res")
+
 	char := builder.CreateCall(getcharFunc, []llvm.Value{}, "char")
 	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
 	char = builder.CreateCall(getcharFunc, []llvm.Value{}, "char")
 	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
 	char = builder.CreateCall(getcharFunc, []llvm.Value{}, "char")
 	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
+
 	builder.CreateRetVoid()
 
 	mainModule.Dump()
@@ -78,9 +80,24 @@ func main() {
 		llvm.RelocDefault,
 		llvm.CodeModelSmall)
 	buffer, err := machine.EmitToMemoryBuffer(mainModule, llvm.ObjectFile)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Cannot emit object file to memory buffer:")
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(-1)
+	}
 	objectFileName := "hello.o"
-	ioutil.WriteFile(objectFileName, buffer.Bytes(), 0644)
+	err = ioutil.WriteFile(objectFileName, buffer.Bytes(), 0644)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Cannot save file:")
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(-1)
+	}
 	cmd := exec.Command("clang", objectFileName, "-o", "hello_program")
-	cmd.Run()
+	err = cmd.Run()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Cannot run clang:")
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(-1)
+	}
 	os.Remove(objectFileName)
 }
