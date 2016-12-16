@@ -31,6 +31,7 @@ func main() {
 
 	hello := builder.CreateGlobalStringPtr("Hello, Grainlang!", "hello")
 	format := builder.CreateGlobalStringPtr("[%s]", "format")
+	format2 := builder.CreateGlobalStringPtr("[%c]\n", "format2")
 	builder.CreateCall(putsFunc, []llvm.Value{hello}, "res")
 	builder.CreateCall(printfFunc, []llvm.Value{format, hello}, "res")
 
@@ -40,6 +41,7 @@ func main() {
 	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
 	char = builder.CreateCall(getcharFunc, []llvm.Value{}, "char")
 	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
+	builder.CreateCall(printfFunc, []llvm.Value{format2, char}, "res")
 
 	builder.CreateRetVoid()
 
