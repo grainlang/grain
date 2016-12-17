@@ -3,8 +3,12 @@ sudo: required
 
 language: go
 
-go:
-  - 1.4.x
+matrix:
+  include:
+    - go: 1.4.x
+      env: LLVM_GO_GET_FLAGS=""
+    - go: 1.5.x
+      env: LLVM_GO_GET_FLAGS="-insecure"
 
 before_install:
   - cmake --version
@@ -20,7 +24,7 @@ before_install:
   - cmake --version
 
 install:
-  - go get -d -v llvm.org/llvm/bindings/go/llvm
+  - go get $LLVM_GO_GET_FLAGS -d -v llvm.org/llvm/bindings/go/llvm
   - $GOPATH/src/llvm.org/llvm/bindings/go/build.sh -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=host
 
 script:
