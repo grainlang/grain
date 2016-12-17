@@ -3,11 +3,19 @@ language: go
 go:
   - 1.4.x
 
+addons:
+  apt:
+    sources:
+      - george-edison55-precise-backports
+    packages:
+      - cmake
+      - cmake-data
+
 install:
   - go get -d -v llvm.org/llvm/bindings/go/llvm
   - $GOPATH/src/llvm.org/llvm/bindings/go/build.sh -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=host
 
 script:
-  - time go build
-  - graincompiler/graincompiler
-  - graincompiler/hello_program
+  - time go build ./...
+  - ./graincompiler
+  - ./hello_program
