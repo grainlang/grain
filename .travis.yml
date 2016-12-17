@@ -13,7 +13,10 @@ before_install:
   - ./configure
   - make
   - sudo make install
+  - cmake --version
+  - ls /usr/bin/cmake
   - update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
+  - sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
   - cmake --version
 
 install:
