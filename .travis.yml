@@ -14,11 +14,9 @@ before_install:
   - ./configure
   - make
   - sudo make install
+  - sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
   - cd ..
   - rm -rf cmake-3.7.1/
-  - cmake --version
-  - ls /usr/bin/cmake
-  - sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
   - cmake --version
 
 install:
@@ -26,6 +24,8 @@ install:
   - $GOPATH/src/llvm.org/llvm/bindings/go/build.sh -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=host
 
 script:
-  - time go build ./...
+  - cd graincompiler
+  - time go build
   - ./graincompiler
-  - ./hello_program
+  - echo "abc" | ./hello_program > "hello_expected"
+  - cmp --silent hello_expected hello_expected || { echo 'Files are not the same.'; exit 1; }
