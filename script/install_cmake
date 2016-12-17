@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ! -d cmake_install ]; then
+  mkdir cmake_install
+  cd cmake_install/
+  wget http://www.cmake.org/files/v3.7/cmake-3.7.1.tar.gz
+  tar -xvzf cmake-3.7.1.tar.gz
+  cd cmake-3.7.1/
+  ./configure
+  make
+else
+  cd cmake_install/cmake-3.7.1/
+fi
+
+sudo make install
+sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
+cd ../..

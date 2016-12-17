@@ -10,17 +10,13 @@ matrix:
     - go: 1.5.x
       env: LLVM_GO_GET_FLAGS="-insecure"
 
+cache:
+  directories:
+    - cmake_install/cmake-3.7.1/
+
 before_install:
   - cmake --version
-  - wget http://www.cmake.org/files/v3.7/cmake-3.7.1.tar.gz
-  - tar -xvzf cmake-3.7.1.tar.gz
-  - cd cmake-3.7.1/
-  - ./configure
-  - make
-  - sudo make install
-  - sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
-  - cd ..
-  - rm -rf cmake-3.7.1/
+  - script/install_cmake
   - cmake --version
 
 install:
