@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - 1.5.x
+  - 1.4.x
 
 install:
   - go get -d -v llvm.org/llvm/bindings/go/llvm
