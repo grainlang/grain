@@ -19,7 +19,7 @@ func main() {
 	printfFuncType := llvm.FunctionType(llvm.Int32Type(), []llvm.Type{llvm.PointerType(llvm.Int8Type(), 0)}, true)
 	printfFunc := llvm.AddFunction(mainModule, "printf", printfFuncType)
 
-	mainFuncType := llvm.FunctionType(llvm.VoidType(), []llvm.Type{}, false)
+	mainFuncType := llvm.FunctionType(llvm.Int32Type(), []llvm.Type{}, false)
 	mainFunc := llvm.AddFunction(mainModule, "main", mainFuncType)
 	body := llvm.AddBasicBlock(mainFunc, "entry")
 	builder.SetInsertPoint(body, body.FirstInstruction())
@@ -43,7 +43,7 @@ func main() {
 	builder.CreateCall(putcharFunc, []llvm.Value{char}, "")
 	builder.CreateCall(printfFunc, []llvm.Value{format2, char}, "res")
 
-	builder.CreateRetVoid()
+	builder.CreateRet(llvm.ConstInt(llvm.Int32Type(), 0, true))
 
 	mainModule.Dump()
 
