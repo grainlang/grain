@@ -7,12 +7,15 @@ go:
   - 1.4.x
 
 before_install:
+  - cmake --version
   - wget http://www.cmake.org/files/v3.7/cmake-3.7.1.tar.gz
   - tar -xvzf cmake-3.7.1.tar.gz
   - cd cmake-3.7.1/
   - ./configure
   - make
   - sudo make install
+  - cd ..
+  - rm -rf cmake-3.7.1/
   - cmake --version
   - ls /usr/bin/cmake
   - sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
