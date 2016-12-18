@@ -16,16 +16,14 @@ cache:
     - cmake_install/cmake-3.7.1/
 
 before_install:
-  - cmake --version
   - script/install_cmake
-  - cmake --version
-
-install:
   - script/install_llvm
 
-script:
+install:
   - cd graincompiler
   - time go build
+
+script:
   - ./graincompiler
   - echo "abc" | ./hello_program > hello_output
   - cmp --silent hello_output hello_expected || { echo 'Files are not the same.'; exit 1; }
