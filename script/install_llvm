@@ -1,12 +1,4 @@
 #!/bin/bash
 
-ls /home/travis/
-ls /home/travis/gopath
-ls /home/travis/gopath/src/
-ls /home/travis/gopath/src/llvm.org
-ls /home/travis/gopath/src/llvm.org/llvm
-ls /home/travis/gopath/src/llvm.org/llvm/bindings
-ls /home/travis/gopath/src/llvm.org/llvm/bindings/go
-
-[ ! -d "$GOPATH/src/llvm.org/llvm" ] && go get $LLVM_GO_GET_FLAGS -d -v llvm.org/llvm/bindings/go/llvm
+[ ! -f "$GOPATH/src/llvm.org/llvm/bindings/go/build.sh" ] && go get $LLVM_GO_GET_FLAGS -d -v llvm.org/llvm/bindings/go/llvm
 $GOPATH/src/llvm.org/llvm/bindings/go/build.sh -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=host
