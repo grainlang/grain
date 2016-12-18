@@ -11,6 +11,8 @@ if [ ! -f cmake_install/cmake-3.7.1/bin/cmake ]; then
 else
   cd cmake_install/cmake-3.7.1/
 fi
+cmake --version
 sudo make install
+cmake --version
 sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
 cd ../..
