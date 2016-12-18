@@ -1,5 +1,13 @@
 #!/bin/bash
 
+ls /home/travis/
+ls /home/travis/gopath
+ls /home/travis/gopath/src/
+ls /home/travis/gopath/src/llvm.org
+ls /home/travis/gopath/src/llvm.org/llvm
+ls /home/travis/gopath/src/llvm.org/llvm/bindings
+ls /home/travis/gopath/src/llvm.org/llvm/bindings/go
+
 if [ ! -d "$GOPATH/src/llvm.org/llvm" ]; then
   go get $LLVM_GO_GET_FLAGS -d -v llvm.org/llvm/bindings/go/llvm
 fi
