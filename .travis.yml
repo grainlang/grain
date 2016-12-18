@@ -13,6 +13,7 @@ matrix:
 cache:
   directories:
     - cmake_install/cmake-3.7.1/
+    - $GOPATH/src/llvm.org/llvm/
 
 before_install:
   - cmake --version
