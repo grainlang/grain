@@ -27,3 +27,7 @@ script:
   - ./graincompiler
   - echo "abc" | ./hello_program > hello_output
   - cmp --silent hello_output hello_expected || { echo 'Files are not the same.'; exit 1; }
+  - echo "g" | ./get_put > get_put_output
+  - cmp --silent get_put_output ../hello/get_char_put_char_expected || { echo 'Files are not the same.'; exit 1; }
+  - echo "g" | ./get_upper_put > get_upper_put_output
+  - cmp --silent get_upper_put_output ../hello/get_char_to_upper_put_char_expected || { echo 'Files are not the same.'; exit 1; }
