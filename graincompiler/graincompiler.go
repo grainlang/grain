@@ -47,40 +47,11 @@ func main() {
 
 	mainModule.Dump()
 
-	var err error
-	var target llvm.Target
-
-	llvm.LinkInMCJIT()
-
-	err = llvm.InitializeNativeTarget()
+	machine, err := initMachine()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Native target initialization error:")
-		fmt.Fprintln(os.Stderr, err)
 		os.Exit(-1)
 	}
 
-	err = llvm.InitializeNativeAsmPrinter()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "ASM printer initialization error:")
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(-1)
-	}
-
-	target, err = llvm.GetTargetFromTriple(llvm.DefaultTargetTriple())
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Cannot get target:")
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(-1)
-	}
-
-	fmt.Println("Initialize: TargetTriple = " + llvm.DefaultTargetTriple())
-	fmt.Println("Initialize: TargetDescription = " + target.Description())
-
-	machine := target.CreateTargetMachine(llvm.DefaultTargetTriple(),
-		"", "",
-		llvm.CodeGenLevelNone,
-		llvm.RelocDefault,
-		llvm.CodeModelSmall)
 	buffer, err := machine.EmitToMemoryBuffer(mainModule, llvm.ObjectFile)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Cannot emit object file to memory buffer:")
