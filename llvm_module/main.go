@@ -8,7 +8,7 @@ import (
 func CreateMainModuleWithCallToFunction(function ast.Function) llvm.Module {
 	context := llvm.GlobalContext()
 	builder := context.NewBuilder()
-	module := context.NewModule(function.Id)
+	module := context.NewModule("main with " + function.Id + " " + function.Name)
 	mainFunctionType := llvm.FunctionType(llvm.VoidType(), []llvm.Type{}, false)
 	mainFunction := llvm.AddFunction(module, "main", mainFunctionType)
 	bodyBlock := llvm.AddBasicBlock(mainFunction, "body")

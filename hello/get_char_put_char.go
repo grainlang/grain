@@ -8,9 +8,11 @@ func CreateGetCharPutCharAst() ast.Function {
 		Description: "prints out first character from standard input",
 		Parameters: []ast.Parameter{},
 		ReturnValues: []ast.ReturnValue{},
-		Body: ast.Binding{
-			From: "6d1a6e69-a263-422f-8f19-1d19299af5c9",
-			To: "acbbd3f4-858a-40cb-a465-b2996bc2cf8f",
+		Body: []ast.Expression{
+			ast.Binding{
+				From: "6d1a6e69-a263-422f-8f19-1d19299af5c9",
+				To: "acbbd3f4-858a-40cb-a465-b2996bc2cf8f",
+			},
 		},
 	}
 }

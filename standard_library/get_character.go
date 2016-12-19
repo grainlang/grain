@@ -14,10 +14,12 @@ func CreateGetCharacterAst() ast.Function {
 				ValueType: ast.Character,
 			},
 		},
-		Body: ast.NativeFunctionCall{
-			Name: "getchar",
-			Parameters: []ast.Parameter{},
-			ReturnValue: ast.NativeValueInt,
+		Body: []ast.Expression{
+			ast.NativeFunctionCall{
+				Name: "getchar",
+				Parameters: []ast.Parameter{},
+				ReturnValue: ast.NativeValueInt,
+			},
 		},
 	}
 }

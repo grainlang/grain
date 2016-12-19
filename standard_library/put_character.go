@@ -14,14 +14,16 @@ func CreatePutCharacterAst() ast.Function {
 			},
 		},
 		ReturnValues: []ast.ReturnValue{},
-		Body: ast.NativeFunctionCall{
-			Name: "putchar",
-			Parameters: []ast.Parameter{
-				{
-					Id: "acbbd3f4-858a-40cb-a465-b2996bc2cf8f",
+		Body: []ast.Expression{
+			ast.NativeFunctionCall{
+				Name: "putchar",
+				Parameters: []ast.Parameter{
+					{
+						Id: "acbbd3f4-858a-40cb-a465-b2996bc2cf8f",
+					},
 				},
+				ReturnValue: ast.NativeValueVoid,
 			},
-			ReturnValue: ast.NativeValueVoid,
 		},
 	}
 }

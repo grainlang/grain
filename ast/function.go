@@ -6,7 +6,7 @@ type Function struct {
 	Description  string
 	Parameters   []Parameter
 	ReturnValues []ReturnValue
-	Body         Expression
+	Body         []Expression
 }
 
 type Parameter struct {
