@@ -26,7 +26,14 @@ type ReturnValue struct {
 type Expression interface {
 }
 
+type FunctionUse struct {
+	Id         string
+	FunctionId string
+	Bindings   []Binding
+}
+
 type Binding struct {
-	From string
-	To   string
+	FromFunctionUseId string
+	FromReturnValue   string
+	ToParameter       string
 }

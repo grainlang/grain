@@ -12,7 +12,8 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 	llvmFunction := createFunctionDeclarationInModule(function, module)
 	bodyBlock := llvm.AddBasicBlock(llvmFunction, "body")
 	builder.SetInsertPoint(bodyBlock, bodyBlock.FirstInstruction())
-	functionToReturnValueMap := make(map[string]llvm.Value)
+	returnValueToLlvmValue := make(map[string]llvm.Value)
+	functionToLlvmDeclaration := make(map[string]llvm.Value)
 	for expressionIndex, body := range function.Body {
 		switch typedBody := body.(type) {
 		case ast.NativeFunctionCall:
@@ -41,21 +42,43 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 			}
 			nativeFunctionReturnValue := builder.CreateCall(nativeFunction, nativeFunctionParamValues, "ret")
 			builder.CreateRet(nativeFunctionReturnValue)
-		case ast.Binding:
-			var providingFunction, consumingFunction = FindUsedFunctions(typedBody, allFunctions)
-			var providingFunctionReturnValue llvm.Value
-			if returnValue, ok := functionToReturnValueMap[providingFunction.Id]; ok {
-				providingFunctionReturnValue = returnValue
+		case ast.BinaryOperationCall:
+			var opcode llvm.Opcode
+			if typedBody.Name == "+" {
+				opcode = llvm.Add
 			} else {
-				providingLlvmFunction := createFunctionDeclarationInModule(providingFunction, module)
-				providingFunctionReturnValue = builder.CreateCall(providingLlvmFunction, []llvm.Value{}, "ret")
+				panic("Unknown operator: " + typedBody.Name)
 			}
-			consumingLlvmFunction := createFunctionDeclarationInModule(consumingFunction, module)
-			consumingFunctionReturnValue := builder.CreateCall(consumingLlvmFunction, []llvm.Value{providingFunctionReturnValue}, "ret")
+			var leftParam, rightParam llvm.Value
+			for index, param := range function.Parameters {
+				if typedBody.LeftParameter.Id == param.Id {
+					leftParam = llvmFunction.Param(index)
+				} else if typedBody.RightParameter.Id == param.Id {
+					rightParam = llvmFunction.Param(index)
+				}
+			}
+			binaryOperationReturnValue := builder.CreateBinOp(opcode, leftParam, rightParam, "ret")
+			builder.CreateRet(binaryOperationReturnValue)
+		case ast.FunctionUse:
+			consumingFunction := FindUsedFunction(typedBody, allFunctions)
+			var consumingLlvmFunction llvm.Value
+			if foundDeclaration, ok := functionToLlvmDeclaration[consumingFunction.Id]; ok {
+				consumingLlvmFunction = foundDeclaration
+			} else {
+				consumingLlvmFunction = createFunctionDeclarationInModule(consumingFunction, module)
+				functionToLlvmDeclaration[consumingFunction.Id] = consumingLlvmFunction
+			}
+			llvmParams := make([]llvm.Value, len(typedBody.Bindings))
+			for i, binding := range typedBody.Bindings {
+				llvmParams[i] = returnValueToLlvmValue[binding.FromFunctionUseId + " " + binding.FromReturnValue]
+			}
+			consumingFunctionReturnValue := builder.CreateCall(consumingLlvmFunction, llvmParams, "ret")
 			if expressionIndex == len(function.Body) - 1 {
 				builder.CreateRet(consumingFunctionReturnValue)
 			} else {
-				functionToReturnValueMap[consumingFunction.Id] = consumingFunctionReturnValue
+				if len(consumingFunction.ReturnValues) > 0 {
+					returnValueToLlvmValue[typedBody.Id + " " + consumingFunction.ReturnValues[0].Id] = consumingFunctionReturnValue
+				}
 			}
 		}
 	}
@@ -64,12 +87,20 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 
 func createFunctionDeclarationInModule(function ast.Function, module llvm.Module) llvm.Value {
 	paramTypes := make([]llvm.Type, len(function.Parameters))
-	for i := range function.Parameters {
-		paramTypes[i] = llvm.Int32Type()
+	for i, param := range function.Parameters {
+		if param.ValueType == ast.Integer {
+			paramTypes[i] = llvm.Int32Type()
+		} else {
+			paramTypes[i] = llvm.Int32Type()
+		}
 	}
 	returnTypes := make([]llvm.Type, len(function.ReturnValues))
-	for i := range function.ReturnValues {
-		returnTypes[i] = llvm.Int32Type()
+	for i, returnValue := range function.ReturnValues {
+		if returnValue.ValueType == ast.Integer {
+			returnTypes[i] = llvm.Int32Type()
+		} else {
+			returnTypes[i] = llvm.Int32Type()
+		}
 	}
 	returnType := llvm.StructType(returnTypes, false)
 	llvmFunctionType := llvm.FunctionType(returnType, paramTypes, false)
@@ -77,20 +108,11 @@ func createFunctionDeclarationInModule(function ast.Function, module llvm.Module
 	return llvmFunction
 }
 
-func FindUsedFunctions(bodyPart ast.Binding, allFunctions []ast.Function) (providingFunction, consumingFunction ast.Function) {
+func FindUsedFunction(bodyPart ast.FunctionUse, allFunctions []ast.Function) ast.Function {
 	for _, fn := range allFunctions {
-		for _, returnValue := range fn.ReturnValues {
-			if bodyPart.From == returnValue.Id {
-				providingFunction = fn
-				break
-			}
-		}
-		for _, param := range fn.Parameters {
-			if bodyPart.To == param.Id {
-				consumingFunction = fn
-				break
-			}
+		if bodyPart.FunctionId == fn.Id {
+			return fn
 		}
 	}
-	return
+	panic("No such function " + bodyPart.FunctionId)
 }

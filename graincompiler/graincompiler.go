@@ -28,8 +28,10 @@ func main() {
 		standard_library.CreateGetCharacterAst(),
 		standard_library.CreatePutCharacterAst(),
 		standard_library.CreateToUppercaseAst(),
+		standard_library.CreateAddAst(),
 		hello.CreateGetCharPutCharAst(),
 		hello.CreateGetCharToUpperPutCharAst(),
+		hello.CreateAddTwoCharactersAst(),
 	}
 	matchedFunctions := make([]ast.Function, 0)
 	for _, function := range allFunctions {
@@ -48,25 +50,12 @@ func main() {
 		fmt.Print("Too many function matched name \"" + functionId + "\"\n" + list)
 		os.Exit(-1)
 	}
+	allUsedFunctions := make([]ast.Function, 0)
+	allUsedFunctions = fillAllUsedFunctions(allUsedFunctions, matchedFunctions[0], allFunctions)
 	modules := make(map[string]llvm.Module)
 	modules["main"] = llvm_module.CreateMainModuleWithCallToFunction(matchedFunctions[0])
-	processedFunctions := make([]ast.Function, 1)
-	for len(matchedFunctions) != 0 {
-		current := matchedFunctions[0]
-		matchedFunctions = matchedFunctions[1:]
-		for _, bodyPart := range current.Body {
-			if binding, ok := bodyPart.(ast.Binding); ok {
-				f1, f2 := llvm_module.FindUsedFunctions(binding, allFunctions)
-				if !isIn(f1, processedFunctions) && !isIn(f1, matchedFunctions) {
-					matchedFunctions = append(matchedFunctions, f1)
-				}
-				if !isIn(f2, processedFunctions) && !isIn(f2, matchedFunctions) {
-					matchedFunctions = append(matchedFunctions, f2)
-				}
-			}
-		}
-		modules[current.Id] = llvm_module.CreateLlvmModuleFromFunction(current, allFunctions)
-		processedFunctions = append(processedFunctions, current)
+	for _, usedFunc := range allUsedFunctions {
+		modules[usedFunc.Id] = llvm_module.CreateLlvmModuleFromFunction(usedFunc, allFunctions)
 	}
 	machine, err := initMachine()
 	if err != nil {
@@ -102,6 +91,20 @@ func main() {
 	for id := range modules {
 		os.Remove(id + ".o")
 	}
+}
+
+func fillAllUsedFunctions(allUsedFunctions []ast.Function, current ast.Function, allFunctions []ast.Function) []ast.Function {
+	if !isIn(current, allUsedFunctions) {
+		allUsedFunctions = append(allUsedFunctions, current)
+		for _, part := range current.Body {
+			if use, ok := part.(ast.FunctionUse); ok {
+				fn := llvm_module.FindUsedFunction(use, allFunctions)
+				childrenFunctions := fillAllUsedFunctions(allUsedFunctions, fn, allFunctions)
+				allUsedFunctions = append(allUsedFunctions, childrenFunctions...)
+			}
+		}
+	}
+	return allUsedFunctions
 }
 
 func isIn(function ast.Function, functions []ast.Function) bool {
