@@ -29,6 +29,8 @@ func main() {
 		standard_library.CreatePutCharacterAst(),
 		standard_library.CreateToUppercaseAst(),
 		standard_library.CreateAddAst(),
+		standard_library.CreateSubtractAst(),
+		standard_library.CreateMultiplyAst(),
 		hello.CreateGetCharPutCharAst(),
 		hello.CreateGetCharToUpperPutCharAst(),
 		hello.CreateAddTwoCharactersAst(),

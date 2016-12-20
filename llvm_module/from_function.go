@@ -46,6 +46,10 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 			var opcode llvm.Opcode
 			if typedBody.Name == "+" {
 				opcode = llvm.Add
+			} else if typedBody.Name == "-" {
+				opcode = llvm.Sub
+			} else if typedBody.Name == "*" {
+				opcode = llvm.Mul
 			} else {
 				panic("Unknown operator: " + typedBody.Name)
 			}
