@@ -24,5 +24,6 @@ install:
   - time go build
 
 script:
-  - ./graincompiler
+  - ./graincompiler -f e34d79c1 -o get_put
+  - ./graincompiler -f 8e0b6230 -o get_upper_put
   - ../script/run_e2e_tests

@@ -42,22 +42,7 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 			nativeFunctionReturnValue := builder.CreateCall(nativeFunction, nativeFunctionParamValues, "ret")
 			builder.CreateRet(nativeFunctionReturnValue)
 		case ast.Binding:
-			var providingFunction ast.Function
-			var consumingFunction ast.Function
-			for _, fn := range allFunctions {
-				for _, returnValue := range fn.ReturnValues {
-					if typedBody.From == returnValue.Id {
-						providingFunction = fn
-						break
-					}
-				}
-				for _, param := range fn.Parameters {
-					if typedBody.To == param.Id {
-						consumingFunction = fn
-						break
-					}
-				}
-			}
+			var providingFunction, consumingFunction = FindUsedFunctions(typedBody, allFunctions)
 			var providingFunctionReturnValue llvm.Value
 			if returnValue, ok := functionToReturnValueMap[providingFunction.Id]; ok {
 				providingFunctionReturnValue = returnValue
@@ -90,4 +75,22 @@ func createFunctionDeclarationInModule(function ast.Function, module llvm.Module
 	llvmFunctionType := llvm.FunctionType(returnType, paramTypes, false)
 	llvmFunction := llvm.AddFunction(module, "$" + function.Id, llvmFunctionType)
 	return llvmFunction
+}
+
+func FindUsedFunctions(bodyPart ast.Binding, allFunctions []ast.Function) (providingFunction, consumingFunction ast.Function) {
+	for _, fn := range allFunctions {
+		for _, returnValue := range fn.ReturnValues {
+			if bodyPart.From == returnValue.Id {
+				providingFunction = fn
+				break
+			}
+		}
+		for _, param := range fn.Parameters {
+			if bodyPart.To == param.Id {
+				consumingFunction = fn
+				break
+			}
+		}
+	}
+	return
 }
