@@ -93,7 +93,7 @@ func createFunctionDeclarationInModule(function ast.Function, module llvm.Module
 	paramTypes := make([]llvm.Type, len(function.Parameters))
 	for i, param := range function.Parameters {
 		if param.ValueType == ast.Integer {
-			paramTypes[i] = llvm.Int32Type()
+			paramTypes[i] = llvm.Int64Type()
 		} else {
 			paramTypes[i] = llvm.Int32Type()
 		}
