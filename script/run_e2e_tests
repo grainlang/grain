@@ -1,6 +1,4 @@
 #!/bin/bash
 
-echo "abc" | ./hello_program > hello_output
-cmp hello_output hello_expected || { echo 'Files are not the same.'; exit 1; }
-[ $(echo "g" | ./get_put) == "g" ] || { echo 'Files are not the same.'; exit 1; }
-[ $(echo "g" | ./get_upper_put) == "G" ] || { echo 'Files are not the same.'; exit 1; }
+[ $(echo "g" | ./get_put) == "g" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "g" | ./get_upper_put) == "G" ] || { echo "Output is different than expected."; exit 1; }
