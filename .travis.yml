@@ -25,7 +25,4 @@ install:
 
 script:
   - ./graincompiler
-  - echo "abc" | ./hello_program > hello_output
-  - cmp hello_output hello_expected || { echo 'Files are not the same.'; exit 1; }
-  - [ $(echo "g" | ./get_put) == "g" ] || { echo 'Files are not the same.'; exit 1; }
-  - [ $(echo "g" | ./get_upper_put) == "G" ] || { echo 'Files are not the same.'; exit 1; }
+  - ../script/run_e2e_tests
