@@ -3,6 +3,7 @@ package llvm_module
 import (
 	"github.com/grainlang/grain/ast"
 	"llvm.org/llvm/bindings/go/llvm"
+	"strconv"
 )
 
 func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Function) llvm.Module {
@@ -82,8 +83,9 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 				llvmParams[i] = returnValueToLlvmValue[binding.FromId + " " + binding.FromReturnValue]
 			}
 			consumingFunctionReturnValue := builder.CreateCall(consumingLlvmFunction, llvmParams, "ret")
-			for _, returnValue := range consumingFunction.ReturnValues {
-				returnValueToLlvmValue[typedBody.Id + " " + returnValue.Id] = consumingFunctionReturnValue
+			for i, returnValue := range consumingFunction.ReturnValues {
+				element := builder.CreateExtractValue(consumingFunctionReturnValue, i, "elem" + strconv.Itoa(i))
+				returnValueToLlvmValue[typedBody.Id + " " + returnValue.Id] = element
 			}
 		case ast.Binding:
 			returnBindings = append(returnBindings, returnValueToLlvmValue[typedBody.FromId + " " + typedBody.FromReturnValue])
