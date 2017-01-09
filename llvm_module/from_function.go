@@ -18,6 +18,17 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 	returnBindings := make([]llvm.Value, 0)
 	for _, body := range function.Body {
 		switch typedBody := body.(type) {
+		case ast.Constant:
+			var constValue llvm.Value
+			if typedBody.ValueType == ast.Character {
+				if len(typedBody.Value) != 1 {
+					panic("Wrong character length: " + typedBody.Value)
+				}
+				constValue = llvm.ConstInt(llvm.Int32Type(), uint64(typedBody.Value[0]), true)
+			} else {
+				panic("Unknown constant type.")
+			}
+			returnValueToLlvmValue[typedBody.Id] = constValue
 		case ast.NativeFunctionCall:
 			nativeFunctionParamTypes := make([]llvm.Type, len(typedBody.ParameterBindings))
 			for i := range typedBody.ParameterBindings {
@@ -80,7 +91,13 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 			}
 			llvmParams := make([]llvm.Value, len(typedBody.Bindings))
 			for i, binding := range typedBody.Bindings {
-				llvmParams[i] = returnValueToLlvmValue[binding.FromId + " " + binding.FromReturnValue]
+				var returnValueId string
+				if binding.FromConstant != "" {
+					returnValueId = binding.FromConstant
+				} else {
+					returnValueId = binding.FromId + " " + binding.FromReturnValue
+				}
+				llvmParams[i] = returnValueToLlvmValue[returnValueId]
 			}
 			consumingFunctionReturnValue := builder.CreateCall(consumingLlvmFunction, llvmParams, "ret")
 			for i, returnValue := range consumingFunction.ReturnValues {

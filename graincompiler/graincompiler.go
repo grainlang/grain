@@ -33,6 +33,7 @@ func main() {
 		standard_library.CreateMultiplyAst(),
 		standard_library.CreateDivideAst(),
 		hello.CreateGetCharPutCharAst(),
+		hello.CreatePutCharConstGAst(),
 		hello.CreateGetCharToUpperPutCharAst(),
 		hello.CreateAddTwoCharactersAst(),
 		hello.CreateVoodooCalculationsAst(),

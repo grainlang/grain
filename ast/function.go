@@ -34,6 +34,7 @@ type FunctionUse struct {
 
 type Binding struct {
 	FromParameter   string
+	FromConstant    string
 	FromId          string
 	FromReturnValue string
 	ToParameter     string
