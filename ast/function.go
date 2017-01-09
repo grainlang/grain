@@ -33,7 +33,9 @@ type FunctionUse struct {
 }
 
 type Binding struct {
-	FromFunctionUseId string
-	FromReturnValue   string
-	ToParameter       string
+	FromParameter   string
+	FromId          string
+	FromReturnValue string
+	ToParameter     string
+	ToReturnValue   string
 }

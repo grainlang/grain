@@ -1,18 +1,20 @@
 package ast
 
-var NativeValueVoid = "void"
-var NativeValueInt = "int"
-var NativeValueInt64 = "int64"
+var NativeValueVoid = 0
+var NativeValueInt = 1
 
 type NativeFunctionCall struct {
-	Name        string
-	Parameters  []Parameter
-	ReturnValue string
+	Id         string
+	Name       string
+	Parameters []Parameter
+	ReturnType int
+	ReturnId   string
 }
 
 type BinaryOperationCall struct {
+	Id             string
 	Name           string
 	LeftParameter  Parameter
 	RightParameter Parameter
-	ReturnValue    string
+	ReturnId       string
 }

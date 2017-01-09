@@ -25,6 +25,7 @@ func CreateAddAst() ast.Function {
 		},
 		Body: []ast.Expression{
 			ast.BinaryOperationCall{
+				Id: "+id",
 				Name: "+",
 				LeftParameter: ast.Parameter{
 					Id: "1a6f49fa-5273-4c00-84c5-0278ce1f7041",
@@ -32,7 +33,12 @@ func CreateAddAst() ast.Function {
 				RightParameter: ast.Parameter{
 					Id: "b08c9d64-04a7-4fe2-b9fa-9febb59f5689",
 				},
-				ReturnValue: ast.NativeValueInt64,
+				ReturnId: "+return",
+			},
+			ast.Binding{
+				FromId: "+id",
+				FromReturnValue: "+return",
+				ToReturnValue: "d010a324-fe47-40df-bdb3-15c073d46c86",
 			},
 		},
 	}

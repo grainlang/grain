@@ -22,9 +22,9 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 				nativeFunctionParamTypes[i] = llvm.Int32Type()
 			}
 			var nativeFunctionReturnType llvm.Type
-			if typedBody.ReturnValue == ast.NativeValueVoid {
+			if typedBody.ReturnType == ast.NativeValueVoid {
 				nativeFunctionReturnType = llvm.VoidType()
-			} else if typedBody.ReturnValue == ast.NativeValueInt {
+			} else if typedBody.ReturnType == ast.NativeValueInt {
 				nativeFunctionReturnType = llvm.Int32Type()
 			} else {
 				panic("Unknown type")
@@ -41,7 +41,7 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 				}
 			}
 			nativeFunctionReturnValue := builder.CreateCall(nativeFunction, nativeFunctionParamValues, "ret")
-			builder.CreateRet(nativeFunctionReturnValue)
+			returnValueToLlvmValue[typedBody.Id + " " + typedBody.ReturnId] = nativeFunctionReturnValue
 		case ast.BinaryOperationCall:
 			var opcode llvm.Opcode
 			if typedBody.Name == "+" {
@@ -62,7 +62,7 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 				}
 			}
 			binaryOperationReturnValue := builder.CreateBinOp(opcode, leftParam, rightParam, "ret")
-			builder.CreateRet(binaryOperationReturnValue)
+			returnValueToLlvmValue[typedBody.Id + " " + typedBody.ReturnId] = binaryOperationReturnValue
 		case ast.FunctionUse:
 			consumingFunction := FindUsedFunction(typedBody, allFunctions)
 			var consumingLlvmFunction llvm.Value
@@ -74,7 +74,7 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 			}
 			llvmParams := make([]llvm.Value, len(typedBody.Bindings))
 			for i, binding := range typedBody.Bindings {
-				llvmParams[i] = returnValueToLlvmValue[binding.FromFunctionUseId + " " + binding.FromReturnValue]
+				llvmParams[i] = returnValueToLlvmValue[binding.FromId + " " + binding.FromReturnValue]
 			}
 			consumingFunctionReturnValue := builder.CreateCall(consumingLlvmFunction, llvmParams, "ret")
 			if expressionIndex == len(function.Body) - 1 {
@@ -84,6 +84,8 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 					returnValueToLlvmValue[typedBody.Id + " " + consumingFunction.ReturnValues[0].Id] = consumingFunctionReturnValue
 				}
 			}
+		case ast.Binding:
+			builder.CreateRet(returnValueToLlvmValue[typedBody.FromId + " " + typedBody.FromReturnValue])
 		}
 	}
 	return module

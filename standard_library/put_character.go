@@ -22,7 +22,9 @@ func CreatePutCharacterAst() ast.Function {
 						Id: "acbbd3f4-858a-40cb-a465-b2996bc2cf8f",
 					},
 				},
-				ReturnValue: ast.NativeValueVoid,
+				ReturnType: ast.NativeValueVoid,
+			},
+			ast.Binding{
 			},
 		},
 	}
