@@ -113,7 +113,7 @@ func createFunctionDeclarationInModule(function ast.Function, module llvm.Module
 	returnTypes := make([]llvm.Type, len(function.ReturnValues))
 	for i, returnValue := range function.ReturnValues {
 		if returnValue.ValueType == ast.Integer {
-			returnTypes[i] = llvm.Int32Type()
+			returnTypes[i] = llvm.Int64Type()
 		} else {
 			returnTypes[i] = llvm.Int32Type()
 		}
