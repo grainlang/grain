@@ -16,15 +16,15 @@ func CreateGetCharacterAst() ast.Function {
 		},
 		Body: []ast.Expression{
 			ast.NativeFunctionCall{
-				Id: "getchar_id",
+				Id: "c69a023e-45ed-41fc-b569-a4c197b9f32e",
 				Name: "getchar",
 				Parameters: []ast.Parameter{},
 				ReturnType: ast.NativeValueInt,
-				ReturnId: "getchar_ret",
+				ReturnId: "68cfeb4e-4bad-451b-af77-c717a159e238",
 			},
 			ast.Binding{
-				FromId: "getchar_id",
-				FromReturnValue: "getchar_ret",
+				FromId: "c69a023e-45ed-41fc-b569-a4c197b9f32e",
+				FromReturnValue: "68cfeb4e-4bad-451b-af77-c717a159e238",
 				ToReturnValue: "6d1a6e69-a263-422f-8f19-1d19299af5c9",
 			},
 		},

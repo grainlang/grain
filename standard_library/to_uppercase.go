@@ -21,7 +21,7 @@ func CreateToUppercaseAst() ast.Function {
 		},
 		Body: []ast.Expression{
 			ast.NativeFunctionCall{
-				Id: "upper_id",
+				Id: "07322ea3-d7c1-49b2-a2e7-114b168830c9",
 				Name: "toupper",
 				Parameters: []ast.Parameter{
 					{
@@ -29,11 +29,11 @@ func CreateToUppercaseAst() ast.Function {
 					},
 				},
 				ReturnType: ast.NativeValueInt,
-				ReturnId: "ret_id",
+				ReturnId: "463081ce-8785-4efe-b6c5-4a814a87cd93",
 			},
 			ast.Binding{
-				FromId: "upper_id",
-				FromReturnValue: "ret_id",
+				FromId: "07322ea3-d7c1-49b2-a2e7-114b168830c9",
+				FromReturnValue: "463081ce-8785-4efe-b6c5-4a814a87cd93",
 				ToReturnValue: "430e2b1d-089f-48b1-9e47-d85b5b592d1a",
 			},
 		},

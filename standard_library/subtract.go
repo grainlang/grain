@@ -27,7 +27,7 @@ func CreateSubtractAst() ast.Function {
 		},
 		Body: []ast.Expression{
 			ast.BinaryOperationCall{
-				Id: "-id",
+				Id: "23da34f6-6fc5-4d89-a426-e1cebb821aed",
 				Name: "-",
 				LeftParameter: ast.Parameter{
 					Id: "d142b061-7aff-4c39-a3ad-ff0ff0ebf3de",
@@ -35,11 +35,11 @@ func CreateSubtractAst() ast.Function {
 				RightParameter: ast.Parameter{
 					Id: "301ee05c-3b79-4c61-a0be-482966161abb",
 				},
-				ReturnId: "-ret_id",
+				ReturnId: "da148128-1fa2-4fc5-9364-3ee3eac231d0",
 			},
 			ast.Binding{
-				FromId: "-id",
-				FromReturnValue: "-ret_id",
+				FromId: "23da34f6-6fc5-4d89-a426-e1cebb821aed",
+				FromReturnValue: "da148128-1fa2-4fc5-9364-3ee3eac231d0",
 				ToReturnValue: "dc49938b-bdd3-4e69-bbae-c81b0132ef58",
 			},
 		},
