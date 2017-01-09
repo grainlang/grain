@@ -25,6 +25,8 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 					panic("Wrong character length: " + typedBody.Value)
 				}
 				constValue = llvm.ConstInt(llvm.Int32Type(), uint64(typedBody.Value[0]), true)
+			} else if typedBody.ValueType == ast.Integer {
+				constValue = llvm.ConstIntFromString(llvm.Int64Type(), typedBody.Value, 10)
 			} else {
 				panic("Unknown constant type.")
 			}

@@ -4,6 +4,8 @@
 [ $(echo "g" | ./get_put) == "g" ] || { echo "Output is different than expected."; exit 1; }
 ./graincompiler -f e0061370 -o put_char_g
 [ $(./put_char_g) == "G" ] || { echo "Output is different than expected."; exit 1; }
+./graincompiler -f 2c2cefed -o put_char_97
+[ $(./put_char_97) == "a" ] || { echo "Output is different than expected."; exit 1; }
 ./graincompiler -f 8e0b6230 -o get_upper_put
 [ $(echo "g" | ./get_upper_put) == "G" ] || { echo "Output is different than expected."; exit 1; }
 ./graincompiler -f 86bf30d1 -o add_two_chars

@@ -34,6 +34,7 @@ func main() {
 		standard_library.CreateDivideAst(),
 		hello.CreateGetCharPutCharAst(),
 		hello.CreatePutCharConstGAst(),
+		hello.CreatePutCharConst97Ast(),
 		hello.CreateGetCharToUpperPutCharAst(),
 		hello.CreateAddTwoCharactersAst(),
 		hello.CreateVoodooCalculationsAst(),
