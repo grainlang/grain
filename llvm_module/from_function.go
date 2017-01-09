@@ -19,8 +19,8 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 	for _, body := range function.Body {
 		switch typedBody := body.(type) {
 		case ast.NativeFunctionCall:
-			nativeFunctionParamTypes := make([]llvm.Type, len(typedBody.Parameters))
-			for i := range typedBody.Parameters {
+			nativeFunctionParamTypes := make([]llvm.Type, len(typedBody.ParameterBindings))
+			for i := range typedBody.ParameterBindings {
 				nativeFunctionParamTypes[i] = llvm.Int32Type()
 			}
 			var nativeFunctionReturnType llvm.Type
@@ -33,10 +33,10 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 			}
 			nativeFunctionType := llvm.FunctionType(nativeFunctionReturnType, nativeFunctionParamTypes, false)
 			nativeFunction := llvm.AddFunction(module, typedBody.Name, nativeFunctionType)
-			nativeFunctionParamValues := make([]llvm.Value, len(typedBody.Parameters))
-			for i, nativeFunctionParam := range typedBody.Parameters {
+			nativeFunctionParamValues := make([]llvm.Value, len(typedBody.ParameterBindings))
+			for i, nativeFunctionParam := range typedBody.ParameterBindings {
 				for index, param := range function.Parameters {
-					if nativeFunctionParam.Id == param.Id {
+					if nativeFunctionParam.FromParameter == param.Id {
 						nativeFunctionParamValues[i] = llvmFunction.Param(index)
 						break
 					}
@@ -61,9 +61,9 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 			}
 			var leftParam, rightParam llvm.Value
 			for index, param := range function.Parameters {
-				if typedBody.LeftParameter.Id == param.Id {
+				if typedBody.LeftParameterBinding.FromParameter == param.Id {
 					leftParam = llvmFunction.Param(index)
-				} else if typedBody.RightParameter.Id == param.Id {
+				} else if typedBody.RightParameterBinding.FromParameter == param.Id {
 					rightParam = llvmFunction.Param(index)
 				}
 			}

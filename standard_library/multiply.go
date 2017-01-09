@@ -30,11 +30,11 @@ func CreateMultiplyAst() ast.Function {
 			ast.BinaryOperationCall{
 				Id: "ef20c5c2-6f58-4408-af25-2ca90d95e454",
 				Name: "*",
-				LeftParameter: ast.Parameter{
-					Id: "b787a111-3f85-4053-a8c3-e1dae3ce6fe4",
+				LeftParameterBinding: ast.NativeBinding{
+					FromParameter: "b787a111-3f85-4053-a8c3-e1dae3ce6fe4",
 				},
-				RightParameter: ast.Parameter{
-					Id: "a0a9a1b3-ef5f-469f-ae78-9dc9aedcf510",
+				RightParameterBinding: ast.NativeBinding{
+					FromParameter: "a0a9a1b3-ef5f-469f-ae78-9dc9aedcf510",
 				},
 				ReturnId: "1acccafb-2ddb-4ef9-8e2d-94a0f7301cfd",
 			},

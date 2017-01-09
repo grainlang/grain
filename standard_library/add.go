@@ -30,11 +30,11 @@ func CreateAddAst() ast.Function {
 			ast.BinaryOperationCall{
 				Id: "a4d648a1-29b9-457e-af95-77965a61c4a8",
 				Name: "+",
-				LeftParameter: ast.Parameter{
-					Id: "1a6f49fa-5273-4c00-84c5-0278ce1f7041",
+				LeftParameterBinding: ast.NativeBinding{
+					FromParameter: "1a6f49fa-5273-4c00-84c5-0278ce1f7041",
 				},
-				RightParameter: ast.Parameter{
-					Id: "b08c9d64-04a7-4fe2-b9fa-9febb59f5689",
+				RightParameterBinding: ast.NativeBinding{
+					FromParameter: "b08c9d64-04a7-4fe2-b9fa-9febb59f5689",
 				},
 				ReturnId: "ba1937fa-14d0-45bd-8b2d-cc38b424ea07",
 			},

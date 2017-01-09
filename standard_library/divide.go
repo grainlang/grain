@@ -35,11 +35,11 @@ func CreateDivideAst() ast.Function {
 			ast.BinaryOperationCall{
 				Id: "85390ef5-3097-4e01-807f-09077c78e158",
 				Name: "/",
-				LeftParameter: ast.Parameter{
-					Id: "c557ed6f-bae9-4863-8b37-9fca854569d7",
+				LeftParameterBinding: ast.NativeBinding{
+					FromParameter: "c557ed6f-bae9-4863-8b37-9fca854569d7",
 				},
-				RightParameter: ast.Parameter{
-					Id: "8aed9c05-6b5d-475f-95b6-952a9d346a32",
+				RightParameterBinding: ast.NativeBinding{
+					FromParameter: "8aed9c05-6b5d-475f-95b6-952a9d346a32",
 				},
 				ReturnId: "1c062aa4-1873-4b35-a375-9f9c54c2e497",
 			},
@@ -51,11 +51,11 @@ func CreateDivideAst() ast.Function {
 			ast.BinaryOperationCall{
 				Id: "ea81866d-cc2f-49c5-ac2c-3330bcc569e8",
 				Name: "%",
-				LeftParameter: ast.Parameter{
-					Id: "c557ed6f-bae9-4863-8b37-9fca854569d7",
+				LeftParameterBinding: ast.NativeBinding{
+					FromParameter: "c557ed6f-bae9-4863-8b37-9fca854569d7",
 				},
-				RightParameter: ast.Parameter{
-					Id: "8aed9c05-6b5d-475f-95b6-952a9d346a32",
+				RightParameterBinding: ast.NativeBinding{
+					FromParameter: "8aed9c05-6b5d-475f-95b6-952a9d346a32",
 				},
 				ReturnId: "e287b6b5-8525-42f8-9369-778608cad0a7",
 			},

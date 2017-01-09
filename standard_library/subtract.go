@@ -30,11 +30,11 @@ func CreateSubtractAst() ast.Function {
 			ast.BinaryOperationCall{
 				Id: "23da34f6-6fc5-4d89-a426-e1cebb821aed",
 				Name: "-",
-				LeftParameter: ast.Parameter{
-					Id: "d142b061-7aff-4c39-a3ad-ff0ff0ebf3de",
+				LeftParameterBinding: ast.NativeBinding{
+					FromParameter: "d142b061-7aff-4c39-a3ad-ff0ff0ebf3de",
 				},
-				RightParameter: ast.Parameter{
-					Id: "301ee05c-3b79-4c61-a0be-482966161abb",
+				RightParameterBinding: ast.NativeBinding{
+					FromParameter: "301ee05c-3b79-4c61-a0be-482966161abb",
 				},
 				ReturnId: "da148128-1fa2-4fc5-9364-3ee3eac231d0",
 			},

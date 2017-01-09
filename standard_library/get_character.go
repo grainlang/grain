@@ -18,7 +18,7 @@ func CreateGetCharacterAst() ast.Function {
 			ast.NativeFunctionCall{
 				Id: "c69a023e-45ed-41fc-b569-a4c197b9f32e",
 				Name: "getchar",
-				Parameters: []ast.Parameter{},
+				ParameterBindings: []ast.NativeBinding{},
 				ReturnType: ast.NativeValueInt,
 				ReturnId: "68cfeb4e-4bad-451b-af77-c717a159e238",
 			},

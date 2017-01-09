@@ -23,9 +23,9 @@ func CreateToUppercaseAst() ast.Function {
 			ast.NativeFunctionCall{
 				Id: "07322ea3-d7c1-49b2-a2e7-114b168830c9",
 				Name: "toupper",
-				Parameters: []ast.Parameter{
+				ParameterBindings: []ast.NativeBinding{
 					{
-						Id: "3e647713-dabc-48a2-9103-347bf53c9813",
+						FromParameter: "3e647713-dabc-48a2-9103-347bf53c9813",
 					},
 				},
 				ReturnType: ast.NativeValueInt,

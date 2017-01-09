@@ -17,9 +17,9 @@ func CreatePutCharacterAst() ast.Function {
 		Body: []ast.Expression{
 			ast.NativeFunctionCall{
 				Name: "putchar",
-				Parameters: []ast.Parameter{
+				ParameterBindings: []ast.NativeBinding{
 					{
-						Id: "acbbd3f4-858a-40cb-a465-b2996bc2cf8f",
+						FromParameter: "acbbd3f4-858a-40cb-a465-b2996bc2cf8f",
 					},
 				},
 				ReturnType: ast.NativeValueVoid,
