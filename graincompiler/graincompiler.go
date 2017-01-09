@@ -31,9 +31,11 @@ func main() {
 		standard_library.CreateAddAst(),
 		standard_library.CreateSubtractAst(),
 		standard_library.CreateMultiplyAst(),
+		standard_library.CreateDivideAst(),
 		hello.CreateGetCharPutCharAst(),
 		hello.CreateGetCharToUpperPutCharAst(),
 		hello.CreateAddTwoCharactersAst(),
+		hello.CreateVoodooCalculationsAst(),
 	}
 	matchedFunctions := make([]ast.Function, 0)
 	for _, function := range allFunctions {
@@ -57,7 +59,9 @@ func main() {
 	modules := make(map[string]llvm.Module)
 	modules["main"] = llvm_module.CreateMainModuleWithCallToFunction(matchedFunctions[0])
 	for _, usedFunc := range allUsedFunctions {
-		modules[usedFunc.Id] = llvm_module.CreateLlvmModuleFromFunction(usedFunc, allFunctions)
+		module := llvm_module.CreateLlvmModuleFromFunction(usedFunc, allFunctions)
+		module.Dump()
+		modules[usedFunc.Id] = module
 	}
 	machine, err := initMachine()
 	if err != nil {
@@ -65,7 +69,6 @@ func main() {
 	}
 	clangParams := make([]string, len(modules) + 2)
 	for id, module := range modules {
-		module.Dump()
 		buffer, err := machine.EmitToMemoryBuffer(module, llvm.ObjectFile)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Cannot emit object file to memory buffer:")

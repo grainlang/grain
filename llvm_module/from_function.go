@@ -14,7 +14,8 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 	builder.SetInsertPoint(bodyBlock, bodyBlock.FirstInstruction())
 	returnValueToLlvmValue := make(map[string]llvm.Value)
 	functionToLlvmDeclaration := make(map[string]llvm.Value)
-	for expressionIndex, body := range function.Body {
+	returnBindings := make([]llvm.Value, 0)
+	for _, body := range function.Body {
 		switch typedBody := body.(type) {
 		case ast.NativeFunctionCall:
 			nativeFunctionParamTypes := make([]llvm.Type, len(typedBody.Parameters))
@@ -50,6 +51,10 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 				opcode = llvm.Sub
 			} else if typedBody.Name == "*" {
 				opcode = llvm.Mul
+			} else if typedBody.Name == "/" {
+				opcode = llvm.SDiv
+			} else if typedBody.Name == "%" {
+				opcode = llvm.SRem
 			} else {
 				panic("Unknown operator: " + typedBody.Name)
 			}
@@ -77,17 +82,14 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 				llvmParams[i] = returnValueToLlvmValue[binding.FromId + " " + binding.FromReturnValue]
 			}
 			consumingFunctionReturnValue := builder.CreateCall(consumingLlvmFunction, llvmParams, "ret")
-			if expressionIndex == len(function.Body) - 1 {
-				builder.CreateRet(consumingFunctionReturnValue)
-			} else {
-				if len(consumingFunction.ReturnValues) > 0 {
-					returnValueToLlvmValue[typedBody.Id + " " + consumingFunction.ReturnValues[0].Id] = consumingFunctionReturnValue
-				}
+			for _, returnValue := range consumingFunction.ReturnValues {
+				returnValueToLlvmValue[typedBody.Id + " " + returnValue.Id] = consumingFunctionReturnValue
 			}
 		case ast.Binding:
-			builder.CreateRet(returnValueToLlvmValue[typedBody.FromId + " " + typedBody.FromReturnValue])
+			returnBindings = append(returnBindings, returnValueToLlvmValue[typedBody.FromId + " " + typedBody.FromReturnValue])
 		}
 	}
+	builder.CreateAggregateRet(returnBindings)
 	return module
 }
 
