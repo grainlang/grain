@@ -27,7 +27,7 @@ func CreateDivideAst() ast.Function {
 			},
 			{
 				Id: "f2bc71ef-c0b9-42a5-847a-676408d768eb",
-				Name: "reminder",
+				Name: "remainder",
 				ValueType: ast.Integer,
 			},
 		},
