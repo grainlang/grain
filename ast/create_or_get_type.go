@@ -16,3 +16,9 @@ var Integer = Type{
 	Name: "integer",
 	Description: "64 bits",
 }
+
+var Boolean = Type{
+	Id: "3d357509-0cbe-465f-a455-00ed0b649597",
+	Name: "boolean",
+	Description: "1 bit",
+}

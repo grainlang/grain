@@ -13,3 +13,7 @@
 ./graincompiler -f daa2455e -o voodoo_calculations
 [ $(echo "9+1" | ./voodoo_calculations) == "21" ] || { echo "Output is different than expected."; exit 1; }
 [ $(echo "1+5" | ./voodoo_calculations) == "'H" ] || { echo "Output is different than expected."; exit 1; }
+./graincompiler -f f187aa24 -o get_char_equals_a
+[ $(echo "a" | ./get_char_equals_a) == "b" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "b" | ./get_char_equals_a) == "a" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "g" | ./get_char_equals_a) == "a" ] || { echo "Output is different than expected."; exit 1; }

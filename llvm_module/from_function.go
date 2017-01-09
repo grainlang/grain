@@ -69,6 +69,8 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 				opcode = llvm.SDiv
 			} else if typedBody.Name == "%" {
 				opcode = llvm.SRem
+			} else if typedBody.Name == "=" {
+				opcode = llvm.ICmp
 			} else {
 				panic("Unknown operator: " + typedBody.Name)
 			}
@@ -80,7 +82,12 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 					rightParam = llvmFunction.Param(index)
 				}
 			}
-			binaryOperationReturnValue := builder.CreateBinOp(opcode, leftParam, rightParam, "ret")
+			var binaryOperationReturnValue llvm.Value
+			if typedBody.Name == "=" {
+				binaryOperationReturnValue = builder.CreateICmp(llvm.IntEQ, leftParam, rightParam, "ret")
+			} else {
+				binaryOperationReturnValue = builder.CreateBinOp(opcode, leftParam, rightParam, "ret")
+			}
 			returnValueToLlvmValue[typedBody.Id + " " + typedBody.ReturnId] = binaryOperationReturnValue
 		case ast.FunctionUse:
 			consumingFunction := FindUsedFunction(typedBody, allFunctions)
@@ -125,16 +132,20 @@ func createFunctionDeclarationInModule(function ast.Function, module llvm.Module
 	for i, param := range function.Parameters {
 		if param.ValueType == ast.Integer {
 			paramTypes[i] = llvm.Int64Type()
-		} else {
+		} else if param.ValueType == ast.Character {
 			paramTypes[i] = llvm.Int32Type()
+		} else {
+			panic("Unknown param type.")
 		}
 	}
 	returnTypes := make([]llvm.Type, len(function.ReturnValues))
 	for i, returnValue := range function.ReturnValues {
 		if returnValue.ValueType == ast.Integer {
 			returnTypes[i] = llvm.Int64Type()
-		} else {
+		} else if returnValue.ValueType == ast.Character {
 			returnTypes[i] = llvm.Int32Type()
+		} else if returnValue.ValueType == ast.Boolean {
+			returnTypes[i] = llvm.Int1Type()
 		}
 	}
 	returnType := llvm.StructType(returnTypes, false)

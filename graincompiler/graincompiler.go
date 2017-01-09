@@ -32,12 +32,14 @@ func main() {
 		standard_library.CreateSubtractAst(),
 		standard_library.CreateMultiplyAst(),
 		standard_library.CreateDivideAst(),
+		standard_library.CreateIntEqualsAst(),
 		hello.CreateGetCharPutCharAst(),
 		hello.CreatePutCharConstGAst(),
 		hello.CreatePutCharConst97Ast(),
 		hello.CreateGetCharToUpperPutCharAst(),
 		hello.CreateAddTwoCharactersAst(),
 		hello.CreateVoodooCalculationsAst(),
+		hello.CreateGetCharEqualsAAst(),
 	}
 	matchedFunctions := make([]ast.Function, 0)
 	for _, function := range allFunctions {
