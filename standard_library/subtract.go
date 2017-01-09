@@ -22,6 +22,7 @@ func CreateSubtractAst() ast.Function {
 		ReturnValues: []ast.ReturnValue{
 			{
 				Id: "dc49938b-bdd3-4e69-bbae-c81b0132ef58",
+				Name: "difference",
 				ValueType: ast.Integer,
 			},
 		},

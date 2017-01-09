@@ -10,16 +10,19 @@ func CreateMultiplyAst() ast.Function {
 		Parameters: []ast.Parameter{
 			{
 				Id: "b787a111-3f85-4053-a8c3-e1dae3ce6fe4",
+				Name: "factor",
 				ValueType: ast.Integer,
 			},
 			{
 				Id: "a0a9a1b3-ef5f-469f-ae78-9dc9aedcf510",
+				Name: "factor",
 				ValueType: ast.Integer,
 			},
 		},
 		ReturnValues: []ast.ReturnValue{
 			{
 				Id: "f30fdb67-d967-47e8-8745-bd2f9770bd4f",
+				Name: "product",
 				ValueType: ast.Integer,
 			},
 		},

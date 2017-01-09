@@ -10,16 +10,19 @@ func CreateAddAst() ast.Function {
 		Parameters: []ast.Parameter{
 			{
 				Id: "1a6f49fa-5273-4c00-84c5-0278ce1f7041",
+				Name: "addend",
 				ValueType: ast.Integer,
 			},
 			{
 				Id: "b08c9d64-04a7-4fe2-b9fa-9febb59f5689",
+				Name: "addend",
 				ValueType: ast.Integer,
 			},
 		},
 		ReturnValues: []ast.ReturnValue{
 			{
 				Id: "d010a324-fe47-40df-bdb3-15c073d46c86",
+				Name: "sum",
 				ValueType: ast.Integer,
 			},
 		},
