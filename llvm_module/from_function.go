@@ -84,7 +84,13 @@ func CreateLlvmModuleFromFunction(function ast.Function, allFunctions []ast.Func
 			}
 			consumingFunctionReturnValue := builder.CreateCall(consumingLlvmFunction, llvmParams, "ret")
 			for i, returnValue := range consumingFunction.ReturnValues {
-				element := builder.CreateExtractValue(consumingFunctionReturnValue, i, "elem" + strconv.Itoa(i))
+				var name string
+				if returnValue.Name != "" {
+					name = returnValue.Name
+				} else {
+					name = "elem" + strconv.Itoa(i)
+				}
+				element := builder.CreateExtractValue(consumingFunctionReturnValue, i, name)
 				returnValueToLlvmValue[typedBody.Id + " " + returnValue.Id] = element
 			}
 		case ast.Binding:
