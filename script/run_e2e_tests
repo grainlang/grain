@@ -8,3 +8,4 @@
 [ $(echo "G " | ./add_two_chars) == "g" ] || { echo "Output is different than expected."; exit 1; }
 ./graincompiler -f daa2455e -o voodoo_calculations
 [ $(echo "9+1" | ./voodoo_calculations) == "21" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "1+9" | ./voodoo_calculations) == "$?" ] || { echo "Output is different than expected."; exit 1; }
