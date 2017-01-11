@@ -1,19 +1,19 @@
 #!/bin/bash
 
 ./graincompiler -f e34d79c1 -o get_put
-[ $(echo "g" | ./get_put) == "g" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "g" | ./get_put) == "g" ] || err
 ./graincompiler -f e0061370 -o put_char_g
-[ $(./put_char_g) == "G" ] || { echo "Output is different than expected."; exit 1; }
+[ $(./put_char_g) == "G" ] || err
 ./graincompiler -f 2c2cefed -o put_char_97
-[ $(./put_char_97) == "a" ] || { echo "Output is different than expected."; exit 1; }
+[ $(./put_char_97) == "a" ] || err
 ./graincompiler -f 8e0b6230 -o get_upper_put
-[ $(echo "g" | ./get_upper_put) == "G" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "g" | ./get_upper_put) == "G" ] || err
 ./graincompiler -f 86bf30d1 -o add_two_chars
-[ $(echo "G " | ./add_two_chars) == "g" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "G " | ./add_two_chars) == "g" ] || err
 ./graincompiler -f daa2455e -o voodoo_calculations
-[ $(echo "9+1" | ./voodoo_calculations) == "21" ] || { echo "Output is different than expected."; exit 1; }
-[ $(echo "1+5" | ./voodoo_calculations) == "'H" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "9+1" | ./voodoo_calculations) == "21" ] || err
+[ $(echo "1+5" | ./voodoo_calculations) == "'H" ] || err
 ./graincompiler -f f187aa24 -o get_char_equals_a
-[ $(echo "a" | ./get_char_equals_a) == "b" ] || { echo "Output is different than expected."; exit 1; }
-[ $(echo "b" | ./get_char_equals_a) == "a" ] || { echo "Output is different than expected."; exit 1; }
-[ $(echo "g" | ./get_char_equals_a) == "a" ] || { echo "Output is different than expected."; exit 1; }
+[ $(echo "a" | ./get_char_equals_a) == "b" ] || err
+[ $(echo "b" | ./get_char_equals_a) == "a" ] || err
+[ $(echo "g" | ./get_char_equals_a) == "a" ] || err
