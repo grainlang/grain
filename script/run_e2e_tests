@@ -1,19 +1,25 @@
 #!/bin/bash
 
 ./graincompiler -f e34d79c1 -o get_put
-[ $(echo "g" | ./get_put) == "g" ] || err
+[ $(echo "g" | ./get_put) == "g" ] || ../script/err
+
 ./graincompiler -f e0061370 -o put_char_g
-[ $(./put_char_g) == "G" ] || err
+[ $(./put_char_g) == "G" ] || ../script/err
+
 ./graincompiler -f 2c2cefed -o put_char_97
-[ $(./put_char_97) == "a" ] || err
+[ $(./put_char_97) == "a" ] || ../script/err
+
 ./graincompiler -f 8e0b6230 -o get_upper_put
-[ $(echo "g" | ./get_upper_put) == "G" ] || err
+[ $(echo "g" | ./get_upper_put) == "G" ] || ../script/err
+
 ./graincompiler -f 86bf30d1 -o add_two_chars
-[ $(echo "G " | ./add_two_chars) == "g" ] || err
+[ $(echo "G " | ./add_two_chars) == "g" ] || ../script/err
+
 ./graincompiler -f daa2455e -o voodoo_calculations
-[ $(echo "9+1" | ./voodoo_calculations) == "21" ] || err
-[ $(echo "1+5" | ./voodoo_calculations) == "'H" ] || err
+[ $(echo "9+1" | ./voodoo_calculations) == "21" ] || ../script/err
+[ $(echo "1+5" | ./voodoo_calculations) == "'H" ] || ../script/err
+
 ./graincompiler -f f187aa24 -o get_char_equals_a
-[ $(echo "a" | ./get_char_equals_a) == "b" ] || err
-[ $(echo "b" | ./get_char_equals_a) == "a" ] || err
-[ $(echo "g" | ./get_char_equals_a) == "a" ] || err
+[ $(echo "a" | ./get_char_equals_a) == "b" ] || ../script/err
+[ $(echo "b" | ./get_char_equals_a) == "a" ] || ../script/err
+[ $(echo "g" | ./get_char_equals_a) == "a" ] || ../script/err
