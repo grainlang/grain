@@ -109,7 +109,11 @@ func fillAllUsedFunctions(allUsedFunctions []ast.Function, current ast.Function,
 			if use, ok := part.(ast.FunctionUse); ok {
 				fn := llvm_module.FindUsedFunction(use, allFunctions)
 				childrenFunctions := fillAllUsedFunctions(allUsedFunctions, fn, allFunctions)
-				allUsedFunctions = append(allUsedFunctions, childrenFunctions...)
+				for _, child := range childrenFunctions {
+					if !isIn(child, allUsedFunctions) {
+						allUsedFunctions = append(allUsedFunctions, child)
+					}
+				}
 			}
 		}
 	}
